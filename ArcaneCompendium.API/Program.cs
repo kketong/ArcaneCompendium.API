@@ -1,3 +1,4 @@
+using Google;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,21 +17,28 @@ builder.Services.Configure<MongoDBSettings>(builder.Configuration.GetSection("Mo
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseMongoDB(mongoDBSettings.AtlasURI, mongoDBSettings.DatabaseName));
 
-
 app.UseHttpsRedirection();
 
-var summaries = new[]
+app.MapGet("/ai/image/generatenewcharacter", async (HttpContext context) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    await context.Response.WriteAsync("Hello World!");
+})
+.WithName("Generate New Character")
+.WithOpenApi();
 
 app.MapGet("/characterbuilder", async (
         HttpContext httpContext, 
         [FromBody] Species species, CharacterClass characterClass, Gender gender) =>
     {
-        var 
+        if (httpContext.User != null)
+        {
+            if ()
+        }
+        GetCharacterBuilderPortrait()
         
-        var prompt = $"A {gender} {species} {characterClass} from Dungeons & Dragons. The subject should have a mysterious and dramatic appearance while maintaining appropriate fantasy RPG aesthetics.";
+        //generate 
+        
+        //var prompt = $"A {gender} {species} {characterClass} from Dungeons & Dragons. The subject should have a mysterious and dramatic appearance while maintaining appropriate fantasy RPG aesthetics. The subject should ";
         
         
         
@@ -44,7 +52,7 @@ app.MapGet("/characterbuilder", async (
 
         return response;
     })
-    .WithName("GenerateCharacterImage")
+    .WithName("Get")
     .WithOpenApi();
 
 app.Run();
